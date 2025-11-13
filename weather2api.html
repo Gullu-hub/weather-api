@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather by Coordinates</title>
+</head>
+<body>
+
+  <div id="weather"></div>
+
+  <script>
+    const API_KEY = "b8f9f6777291f17afed648242a8d2dad"; 
+    const lat = 28.6139;
+    const lon = 77.2090; 
+
+    fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`)
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        display(data);
+      })
+      .catch(err => {
+        console.log("Error fetching weather:", err);
+      });
+
+    function display(data) {
+      const div = document.getElementById("weather");
+
+      const city = document.createElement("h2");
+      city.textContent = "City: " + data.name;
+
+      const temp = document.createElement("p");
+      temp.textContent = "Temperature: " + data.main.temp + "°C";
+
+      const condition = document.createElement("p");
+      condition.textContent = "Condition: " + data.weather[0].description;
+
+      const img = document.createElement("img");
+      const icon = data.weather[0].icon;
+      img.src = `https://openweathermap.org/img/wn/${icon}@2x.png`;
+
+      div.append(city, img, temp, condition);
+    }
+  </script>
+
+</body>
+</html>
